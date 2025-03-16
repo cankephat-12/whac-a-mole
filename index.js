@@ -9,16 +9,17 @@ window.onload = function() {
 
 function setGame() {
     for (let i = 0; i < 9; i++) {
-        let title = document.createElement("div");
-        title.id = i.toString();
-        document.getElementById("board").appendChild(title);
+        let tile = document.createElement("div");
+        tile.id = i.toString();
+        tile.addEventListener("click", selectTile);
+        document.getElementById("board").appendChild(tile);
     }
-
-    setInterval(setMole, 1000);
-    setInterval(setPlant, 2000)
+    setInterval(setMole, 1000); 
+    setInterval(setPlant, 2000); 
 }
 
 function getRandomTile() {
+
     let num = Math.floor(Math.random() * 9);
     return num.toString();
 }
@@ -27,18 +28,20 @@ function setMole() {
     if (gameOver) {
         return;
     }
-
     if (currMoleTile) {
         currMoleTile.innerHTML = "";
     }
-
     let mole = document.createElement("img");
     mole.src = "./monty-mole.png";
 
     let num = getRandomTile();
+    if (currPlantTile && currPlantTile.id == num) {
+        return;
+    }
     currMoleTile = document.getElementById(num);
     currMoleTile.appendChild(mole);
 }
+
 function setPlant() {
     if (gameOver) {
         return;
@@ -63,7 +66,7 @@ function selectTile() {
     }
     if (this == currMoleTile) {
         score += 10;
-        document.getElementById("score").innerText = score.toString();
+        document.getElementById("score").innerText = score.toString(); 
     }
     else if (this == currPlantTile) {
         document.getElementById("score").innerText = "GAME OVER: " + score.toString();
